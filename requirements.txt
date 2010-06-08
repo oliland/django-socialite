@@ -1,0 +1,7 @@
+Django
+httplib2
+oauth2
+-e git+ssh://git@github.com/oliland/django-oauth-access.git#egg=oauth_access
+-e git+http://github.com/facebook/python-sdk.git#egg=facebook-python-sdk
+-e git+http://github.com/joshthecoder/tweepy.git#egg=tweepy
+-e svn+http://python-linkedin.googlecode.com/svn/trunk/python-linkedin-1.5/#egg=python-linkedin

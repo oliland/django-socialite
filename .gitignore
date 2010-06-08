@@ -1,0 +1,10 @@
+*.pyc
+*.py~
+bin
+build
+lib
+include
+src
+distribute*.tar.gz
+*dev.db
+*local.py*
