@@ -1,9 +1,14 @@
 from oauth_access.access import OAuthAccess
 from socialite.users import create_django_user
+from django.contrib.auth.models import User
 
 from linkedin import linkedin
 
 class LinkedInBackend:
+
+    supports_object_permissions = False
+    supports_anonymous_user = False
+    
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
         # Nasty hack to ensure django.contrib.auth.authenticate() works
@@ -26,6 +31,8 @@ class LinkedInBackend:
                         identifier=profile.id)
             return user
             
-    def get_user(self, linkedin_id):
-        access = OAuthAccess("linkedin")
-        return access.lookup_user(linkedin_id)
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None

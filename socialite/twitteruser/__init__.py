@@ -1,9 +1,14 @@
 from oauth_access.access import OAuthAccess
 from socialite.users import create_django_user
+from django.contrib.auth.models import User
 
 import tweepy
 
 class TwitterBackend:
+
+    supports_object_permissions = False
+    supports_anonymous_user = False
+
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
         # Nasty hack to ensure django.contrib.auth.authenticate() works
@@ -37,6 +42,8 @@ class TwitterBackend:
                         identifier=profile.screen_name)
             return user
             
-    def get_user(self, screen_name):
-        access = OAuthAccess("twitter")
-        return access.lookup_user(screen_name)
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None

@@ -1,9 +1,14 @@
 from oauth_access.access import OAuthAccess
 from socialite.users import create_django_user
+from django.contrib.auth.models import User
 
 import facebook
 
 class FacebookBackend:
+
+    supports_object_permissions = False
+    supports_anonymous_user = False
+    
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
         # Nasty hack to ensure django.contrib.auth.authenticate() works
@@ -26,6 +31,8 @@ class FacebookBackend:
                         identifier=profile['id'])
             return user
             
-    def get_user(self, facebook_id):
-        access = OAuthAccess("facebook")
-        return access.lookup_user(facebook_id)
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
