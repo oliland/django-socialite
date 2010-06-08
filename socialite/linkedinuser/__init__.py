@@ -7,7 +7,7 @@ from linkedin import linkedin
 class LinkedInBackend:
 
     supports_object_permissions = False
-    supports_anonymous_user = False
+    supports_anonymous_user = True
     
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
@@ -19,7 +19,7 @@ class LinkedInBackend:
         api.access_token, api.access_token_secret = auth_token.key, auth_token.secret
         profile = api.GetProfile(None,None,'id','first-name','last-name')
         # Match it with a django user
-        user = self.get_user(linkedin_id=profile.id)
+        user = access.lookup_user(identifier=profile.id)
         if user:
             # We have an existing association
             return user

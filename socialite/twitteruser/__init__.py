@@ -7,7 +7,7 @@ import tweepy
 class TwitterBackend:
 
     supports_object_permissions = False
-    supports_anonymous_user = False
+    supports_anonymous_user = True
 
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
@@ -20,7 +20,7 @@ class TwitterBackend:
         api = tweepy.API(auth)
         profile = api.me()
         # Match it with a django user
-        user = self.get_user(screen_name=profile.screen_name)
+        user = access.lookup_user(identifier=profile.screen_name)
         if user:
             # We have an existing association
             return user

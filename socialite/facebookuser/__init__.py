@@ -7,7 +7,7 @@ import facebook
 class FacebookBackend:
 
     supports_object_permissions = False
-    supports_anonymous_user = False
+    supports_anonymous_user = True
     
     def authenticate(self, access, auth_token):
         # Ensure that the tokens are valid for this provider
@@ -18,7 +18,7 @@ class FacebookBackend:
         graph = facebook.GraphAPI(auth_token.token)
         profile = graph.get_object("me")
         # Match it with a django user
-        user = self.get_user(facebook_id=profile['id'])
+        user = access.lookup_user(identifier=profile['id'])
         if user:
             # We have an existing association
             return user
