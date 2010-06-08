@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name = "django-socialite",
-    version = "0.1",
+    version = "0.1a",
     author = "oliland",
     author_email = "oli@oliland.net",
     description = "Easy sign-ins with Facebook, LinkedIn and Twitter based on oauth-access",
@@ -16,7 +16,6 @@ setup(
         "socialite.facebookuser",
         "socialite.linkedinuser",
         "socialite.twitteruser",
-        "socialite.utils",
     ],
     classifiers = [
         "Development Status :: 3 - Alpha",

@@ -1,5 +1,5 @@
 from oauth_access.access import OAuthAccess
-from utils.users import create_django_user
+from socialite.users import create_django_user
 
 import tweepy
 
