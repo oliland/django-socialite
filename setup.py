@@ -13,9 +13,9 @@ setup(
     url = "http://github.com/oliland/django-socialite",
     packages = [
         "socialite",
-        "socialite.facebookuser",
-        "socialite.linkedinuser",
-        "socialite.twitteruser",
+        "socialite.facebook_user",
+        "socialite.linkedin_user",
+        "socialite.twitter_user",
     ],
     classifiers = [
         "Development Status :: 3 - Alpha",
