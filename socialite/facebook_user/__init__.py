@@ -1,4 +1,5 @@
 from oauth_access.access import OAuthAccess
+from oauth_access.models import UserAssociation
 from socialite.users import create_django_user
 from django.contrib.auth.models import User
 
@@ -21,6 +22,10 @@ class FacebookBackend:
         user = access.lookup_user(identifier=profile['id'])
         if user:
             # We have an existing association
+            # Their access token needs to be updated
+            assoc = UserAssociation.objects.get(identifier=profile['id'], service="facebook")
+            assoc.token = auth_token
+            assoc.save()
             return user
         else:
             # Create a new user
