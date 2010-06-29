@@ -20,7 +20,7 @@ class TwitterBackend:
         api = tweepy.API(auth)
         profile = api.me()
         # Match it with a django user
-        user = access.lookup_user(identifier=profile.screen_name)
+        user = access.lookup_user(identifier=profile.id)
         if user:
             # We have an existing association
             return user
@@ -39,7 +39,7 @@ class TwitterBackend:
                                 last_name=last_name)
             # And an association
             access.persist(user=user, token=auth_token,
-                        identifier=profile.screen_name)
+                        identifier=profile.id)
             return user
             
     def get_user(self, user_id):
