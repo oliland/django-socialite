@@ -20,21 +20,14 @@ class FacebookBackend:
         profile = graph.get_object("me")
         # Match it with a django user
         user = access.lookup_user(identifier=profile['id'])
-        if user:
-            # We have an existing association
-            # Their access token needs to be updated
-            assoc = UserAssociation.objects.get(identifier=profile['id'], service="facebook")
-            assoc.token = auth_token
-            assoc.save()
-            return user
-        else:
+        if not user:
             # Create a new user
             user = create_django_user(first_name=profile['first_name'],
                                 last_name=profile['last_name'])
-            # And an association
-            access.persist(user=user, token=auth_token,
+        # Persist the association
+        access.persist(user=user, token=auth_token,
                         identifier=profile['id'])
-            return user
+        return user
             
     def get_user(self, user_id):
         try:

@@ -21,10 +21,7 @@ class TwitterBackend:
         profile = api.me()
         # Match it with a django user
         user = access.lookup_user(identifier=profile.id)
-        if user:
-            # We have an existing association
-            return user
-        else:
+        if not user:
             # Create a new user
             # We need to fudge the name in
             if profile.name:
@@ -37,10 +34,10 @@ class TwitterBackend:
                 first_name = last_name = ""
             user = create_django_user(first_name=first_name,
                                 last_name=last_name)
-            # And an association
-            access.persist(user=user, token=auth_token,
+        # Persist the association
+        access.persist(user=user, token=auth_token,
                         identifier=profile.id)
-            return user
+        return user
             
     def get_user(self, user_id):
         try:

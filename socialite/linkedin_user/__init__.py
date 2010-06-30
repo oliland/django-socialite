@@ -20,16 +20,13 @@ class LinkedInBackend:
         profile = api.GetProfile(None,None,'id','first-name','last-name')
         # Match it with a django user
         user = access.lookup_user(identifier=profile.id)
-        if user:
-            # We have an existing association
-            return user
-        else:
+        if not user:
             user = create_django_user(first_name=profile.first_name,
                                 last_name=profile.last_name)
-            # And an association
-            access.persist(user=user, token=auth_token,
-                        identifier=profile.id)
-            return user
+        # Persist the association
+        access.persist(user=user, token=auth_token,
+                    identifier=profile.id)
+        return user
             
     def get_user(self, user_id):
         try:
